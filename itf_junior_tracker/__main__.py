@@ -19,31 +19,44 @@ def main() -> int:
     parser.add_argument("--headful", action="store_true")
     args = parser.parse_args()
 
+    debug_dir = Path("data") / "debug"
+    debug_dir.mkdir(parents=True, exist_ok=True)
+
     start, end = resolve_range(args.week, args.start, args.end)
 
     print(f"Period: {start} till {end}")
     print("Hämtar kalender...")
 
-    tournaments = get_tournaments(headless=not args.headful)
+    tournaments = get_tournaments(headless=not args.headful, debug_dir=debug_dir)
 
     if args.limit:
         tournaments = tournaments[: args.limit]
 
+    print()
+    print("Turneringar som hittades:")
+    print("-" * 40)
+    for t in tournaments:
+        print(f"{t.category:5} {t.name}")
+        print(f"      {t.acceptance_url}")
+
+    print()
     print(f"Hittade {len(tournaments)} möjliga turneringar.")
     print("Läser acceptance lists...")
 
     all_entries = []
 
-    for t in tournaments:
+    for i, t in enumerate(tournaments, 1):
+        print()
+        print(f"[{i}/{len(tournaments)}] Öppnar {t.name}")
+        print(f"  {t.acceptance_url}")
+
         try:
-            entries = get_entries(t, nation=args.nation)
+            entries = get_entries(t, nation=args.nation, debug_dir=debug_dir, debug_index=i)
+            print(f"  {len(entries)} svenska spelare")
             if entries:
-                print(f"✓ {t.name}: {len(entries)} {args.nation}")
                 all_entries.extend(entries)
-            else:
-                print(f"· {t.name}: 0")
         except Exception as exc:
-            print(f"! {t.name}: {exc}")
+            print(f"  FEL: {exc}")
 
     save_json(all_entries, Path("data") / "swedish_entries.json")
     save_excel(all_entries, Path("data") / "swedish_entries.xlsx")
@@ -53,6 +66,7 @@ def main() -> int:
     print("Sparat:")
     print("data/swedish_entries.json")
     print("data/swedish_entries.xlsx")
+    print("data/debug/")
 
     return 0
 

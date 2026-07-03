@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from pathlib import Path
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
@@ -30,15 +31,21 @@ def acceptance_url(url: str) -> str:
     return clean + "/acceptance-list/"
 
 
-def fetch_calendar_html(headless: bool = True) -> str:
+def fetch_calendar_html(headless: bool = True, debug_dir: str | Path | None = None) -> str:
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=headless)
         page = browser.new_page()
         page.goto(CALENDAR_URL, wait_until="networkidle", timeout=60000)
-        page.wait_for_timeout(4000)
+        page.wait_for_timeout(5000)
         html = page.content()
         browser.close()
-        return html
+
+    if debug_dir:
+        debug = Path(debug_dir)
+        debug.mkdir(parents=True, exist_ok=True)
+        (debug / "calendar.html").write_text(html, encoding="utf-8")
+
+    return html
 
 
 def parse_tournaments(html: str) -> list[Tournament]:
@@ -53,6 +60,8 @@ def parse_tournaments(html: str) -> list[Tournament]:
             continue
         if "/players/" in href:
             continue
+        if "/tournament-calendar/" in href:
+            continue
 
         url = urljoin(BASE_URL, href).split("#")[0].rstrip("/") + "/"
 
@@ -61,7 +70,6 @@ def parse_tournaments(html: str) -> list[Tournament]:
 
         if url in seen:
             continue
-
         seen.add(url)
 
         name = a.get_text(" ", strip=True)
@@ -81,6 +89,16 @@ def parse_tournaments(html: str) -> list[Tournament]:
     return tournaments
 
 
-def get_tournaments(headless: bool = True) -> list[Tournament]:
-    html = fetch_calendar_html(headless=headless)
-    return parse_tournaments(html)
+def get_tournaments(headless: bool = True, debug_dir: str | Path | None = None) -> list[Tournament]:
+    html = fetch_calendar_html(headless=headless, debug_dir=debug_dir)
+    tournaments = parse_tournaments(html)
+
+    if debug_dir:
+        debug = Path(debug_dir)
+        debug.mkdir(parents=True, exist_ok=True)
+        lines = []
+        for t in tournaments:
+            lines.append(f"{t.category}\t{t.name}\t{t.acceptance_url}")
+        (debug / "tournament_urls.txt").write_text("\n".join(lines), encoding="utf-8")
+
+    return tournaments

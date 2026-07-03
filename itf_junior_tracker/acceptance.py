@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+from pathlib import Path
 from typing import Optional
 
 import requests
@@ -13,6 +15,11 @@ HEADERS = {
         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"
     )
 }
+
+
+def safe_name(value: str) -> str:
+    value = re.sub(r"[^A-Za-z0-9ÅÄÖåäö_-]+", "_", value.strip())
+    return value[:80] or "unknown"
 
 
 def to_int(value: str) -> Optional[int]:
@@ -88,5 +95,18 @@ def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> lis
     return entries
 
 
-def get_entries(tournament: Tournament, nation: str = "SWE") -> list[Entry]:
-    return parse_entries(fetch_html(tournament.acceptance_url), tournament, nation=nation)
+def get_entries(
+    tournament: Tournament,
+    nation: str = "SWE",
+    debug_dir: str | Path | None = None,
+    debug_index: int | None = None,
+) -> list[Entry]:
+    html = fetch_html(tournament.acceptance_url)
+
+    if debug_dir and debug_index is not None and debug_index <= 20:
+        debug = Path(debug_dir)
+        debug.mkdir(parents=True, exist_ok=True)
+        filename = f"{debug_index:03d}_{safe_name(tournament.category)}_{safe_name(tournament.name)}.html"
+        (debug / filename).write_text(html, encoding="utf-8")
+
+    return parse_entries(html, tournament, nation=nation)
