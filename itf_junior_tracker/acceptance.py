@@ -4,17 +4,10 @@ import re
 from pathlib import Path
 from typing import Optional
 
-import requests
 from bs4 import BeautifulSoup
+from playwright.sync_api import Page
 
 from .models import Entry, Tournament
-
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36"
-    )
-}
 
 
 def safe_filename(value: str) -> str:
@@ -34,10 +27,10 @@ def to_float(value: str) -> Optional[float]:
         return None
 
 
-def fetch_html(url: str) -> str:
-    r = requests.get(url, headers=HEADERS, timeout=30)
-    r.raise_for_status()
-    return r.text
+def fetch_rendered_html(page: Page, url: str) -> str:
+    page.goto(url, wait_until="networkidle", timeout=60000)
+    page.wait_for_timeout(5000)
+    return page.content()
 
 
 def draw_for_table(table) -> str:
@@ -49,7 +42,9 @@ def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> lis
     soup = BeautifulSoup(html, "lxml")
     entries: list[Entry] = []
 
-    for table in soup.select("table.acceptance-list"):
+    tables = soup.select("table.acceptance-list")
+
+    for table in tables:
         draw = draw_for_table(table)
         if draw.upper() == "WITHDRAWALS":
             continue
@@ -94,12 +89,20 @@ def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> lis
     return entries
 
 
-def get_entries(tournament: Tournament, debug_dir: Path, index: int, nation: str = "SWE") -> list[Entry]:
-    html = fetch_html(tournament.acceptance_url)
+def get_entries(page: Page, tournament: Tournament, debug_dir: Path, index: int, nation: str = "SWE") -> list[Entry]:
+    html = fetch_rendered_html(page, tournament.acceptance_url)
 
-    if index <= 30:
-        debug_dir.mkdir(parents=True, exist_ok=True)
+    debug_dir.mkdir(parents=True, exist_ok=True)
+    if index <= 40:
         filename = f"{index:03d}_{safe_filename(tournament.category)}_{safe_filename(tournament.name)}.html"
         (debug_dir / filename).write_text(html, encoding="utf-8")
 
-    return parse_entries(html, tournament, nation=nation)
+    entries = parse_entries(html, tournament, nation=nation)
+
+    # Extra debug signal.
+    table_count = html.count("acceptance-list")
+    nation_count = html.upper().count(nation.upper())
+    with (debug_dir / "acceptance_debug.txt").open("a", encoding="utf-8") as f:
+        f.write(f"{index}\\t{tournament.name}\\tacceptance-list={table_count}\\t{nation}={nation_count}\\tentries={len(entries)}\\t{tournament.acceptance_url}\\n")
+
+    return entries

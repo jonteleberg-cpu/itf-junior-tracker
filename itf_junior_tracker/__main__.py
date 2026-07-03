@@ -4,6 +4,8 @@ import argparse
 from datetime import date, timedelta
 from pathlib import Path
 
+from playwright.sync_api import sync_playwright
+
 from . import __version__
 from .acceptance import get_entries
 from .calendar import get_tournaments
@@ -38,7 +40,7 @@ def main() -> int:
     print(f"Period: {start} till {end}")
     print("Hämtar kalender...")
 
-    tournaments = get_tournaments(debug_dir=debug_dir)
+    tournaments = get_tournaments(start=start, debug_dir=debug_dir)
     if args.limit:
         tournaments = tournaments[:args.limit]
 
@@ -53,17 +55,23 @@ def main() -> int:
     errors = []
 
     print()
-    print(f"Läser {len(tournaments)} acceptance lists...")
+    print(f"Läser {len(tournaments)} acceptance lists med Playwright...")
 
-    for i, tournament in enumerate(tournaments, 1):
-        try:
-            entries = get_entries(tournament, debug_dir=debug_dir, index=i, nation=args.nation)
-            print(f"[{i}/{len(tournaments)}] {tournament.name}: {len(entries)} {args.nation}")
-            all_entries.extend(entries)
-        except Exception as exc:
-            msg = f"[{i}/{len(tournaments)}] {tournament.name}: FEL {exc}"
-            print(msg)
-            errors.append(msg)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+
+        for i, tournament in enumerate(tournaments, 1):
+            try:
+                entries = get_entries(page, tournament, debug_dir=debug_dir, index=i, nation=args.nation)
+                print(f"[{i}/{len(tournaments)}] {tournament.name}: {len(entries)} {args.nation}")
+                all_entries.extend(entries)
+            except Exception as exc:
+                msg = f"[{i}/{len(tournaments)}] {tournament.name}: FEL {exc}"
+                print(msg)
+                errors.append(msg)
+
+        browser.close()
 
     save_json(all_entries, data_dir / "swedish_entries.json")
     save_excel(all_entries, data_dir / "swedish_entries.xlsx")

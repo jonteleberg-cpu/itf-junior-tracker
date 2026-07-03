@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+from datetime import date
 from pathlib import Path
 from urllib.parse import urljoin
 
@@ -10,11 +11,14 @@ from playwright.sync_api import sync_playwright
 from .models import Tournament
 
 BASE_URL = "https://www.itftennis.com"
-CALENDAR_URL = (
-    BASE_URL
-    + "/en/tournament-calendar/world-tennis-tour-juniors-calendar/"
-    + "?categories=All&startdate=2026"
-)
+
+
+def calendar_url(start: date) -> str:
+    return (
+        BASE_URL
+        + "/en/tournament-calendar/world-tennis-tour-juniors-calendar/"
+        + f"?categories=All&startdate={start.isoformat()}"
+    )
 
 
 def category_from_url(url: str) -> str:
@@ -40,16 +44,18 @@ def acceptance_url(url: str) -> str:
     return clean_tournament_url(url).rstrip("/") + "/acceptance-list/"
 
 
-def fetch_calendar_html(debug_dir: Path) -> str:
+def fetch_calendar_html(start: date, debug_dir: Path) -> str:
+    url = calendar_url(start)
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        page.goto(CALENDAR_URL, wait_until="networkidle", timeout=60000)
-        page.wait_for_timeout(6000)
+        page.goto(url, wait_until="networkidle", timeout=60000)
+        page.wait_for_timeout(7000)
         html = page.content()
         browser.close()
 
     debug_dir.mkdir(parents=True, exist_ok=True)
+    (debug_dir / "calendar_url.txt").write_text(url, encoding="utf-8")
     (debug_dir / "calendar.html").write_text(html, encoding="utf-8")
     return html
 
@@ -64,24 +70,16 @@ def parse_tournaments(html: str, debug_dir: Path) -> list[Tournament]:
 
         if "/tournament/" not in href:
             continue
+        if "/players/" in href or "/tournament-calendar/" in href:
+            continue
 
-        full_url = urljoin(BASE_URL, href)
-        full_url = clean_tournament_url(full_url)
+        full_url = clean_tournament_url(urljoin(BASE_URL, href))
 
-        # Keep only junior tournament URLs.
         if "/en/tournament/" not in full_url:
-            continue
-        if "/jt/" in full_url:
-            # Player URLs can contain /jt/; tournament URLs do not need this.
-            continue
-        if "/players/" in full_url:
-            continue
-        if "/tournament-calendar/" in full_url:
             continue
 
         category = category_from_url(full_url)
-        if not category and "junior" not in full_url.lower():
-            # Avoid wheelchair/media/other tournament links.
+        if not category:
             continue
 
         if full_url in seen:
@@ -110,6 +108,6 @@ def parse_tournaments(html: str, debug_dir: Path) -> list[Tournament]:
     return tournaments
 
 
-def get_tournaments(debug_dir: Path) -> list[Tournament]:
-    html = fetch_calendar_html(debug_dir)
+def get_tournaments(start: date, debug_dir: Path) -> list[Tournament]:
+    html = fetch_calendar_html(start=start, debug_dir=debug_dir)
     return parse_tournaments(html, debug_dir)

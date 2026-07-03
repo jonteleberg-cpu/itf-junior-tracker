@@ -1,16 +1,16 @@
 # ITF Junior Tracker
 
-Version 0.4.
+Version 0.5.
 
-Körs via GitHub Actions.
+Ändring från v0.4:
+- Acceptance lists hämtas nu med Playwright, inte requests.
+- Kalendern öppnas med startdatum för vald vecka.
+- Loggen visar alltid `ITF Junior Tracker v0.5.0`.
 
-Efter körning laddas artifacten `itf-junior-reports` upp. Den ska innehålla:
+Körs via GitHub Actions:
+Actions → Weekly ITF Junior Tracker → Run workflow
+
+Artifact:
 - `swedish_entries.json`
 - `swedish_entries.xlsx`
-- `debug/calendar.html`
-- `debug/tournament_urls.txt`
-- `debug/*.html`
-- `debug/run_summary.txt`
-
-Viktig kontroll i loggen:
-`ITF Junior Tracker v0.4`
+- `debug/`
