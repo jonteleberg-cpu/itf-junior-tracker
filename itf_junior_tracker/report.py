@@ -31,8 +31,7 @@ def print_report(entries: list[Entry]) -> None:
             print(f"  {e.player}{rank}{draw}")
 
 
-def save_json(entries: list[Entry], path: str | Path) -> None:
-    path = Path(path)
+def save_json(entries: list[Entry], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         json.dumps([e.to_dict() for e in entries], ensure_ascii=False, indent=2),
@@ -40,25 +39,12 @@ def save_json(entries: list[Entry], path: str | Path) -> None:
     )
 
 
-def save_excel(entries: list[Entry], path: str | Path) -> None:
-    path = Path(path)
+def save_excel(entries: list[Entry], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-
     df = pd.DataFrame([e.to_dict() for e in entries])
     if df.empty:
-        df = pd.DataFrame(
-            columns=[
-                "player",
-                "nation",
-                "tournament",
-                "category",
-                "draw",
-                "ranking",
-                "wtn",
-                "position",
-                "info",
-                "acceptance_url",
-            ]
-        )
-
+        df = pd.DataFrame(columns=[
+            "player", "nation", "tournament", "category", "draw", "ranking",
+            "wtn", "position", "info", "acceptance_url"
+        ])
     df.to_excel(path, index=False)

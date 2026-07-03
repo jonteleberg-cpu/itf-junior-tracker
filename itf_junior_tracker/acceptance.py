@@ -17,9 +17,9 @@ HEADERS = {
 }
 
 
-def safe_name(value: str) -> str:
+def safe_filename(value: str) -> str:
     value = re.sub(r"[^A-Za-z0-9ÅÄÖåäö_-]+", "_", value.strip())
-    return value[:80] or "unknown"
+    return value[:90] or "unknown"
 
 
 def to_int(value: str) -> Optional[int]:
@@ -47,11 +47,10 @@ def draw_for_table(table) -> str:
 
 def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> list[Entry]:
     soup = BeautifulSoup(html, "lxml")
-    entries = []
+    entries: list[Entry] = []
 
     for table in soup.select("table.acceptance-list"):
         draw = draw_for_table(table)
-
         if draw.upper() == "WITHDRAWALS":
             continue
 
@@ -69,9 +68,9 @@ def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> lis
 
             spans = player_link.find_all("span")
             player = spans[-1].get_text(" ", strip=True) if spans else player_link.get_text(" ", strip=True)
+            player = re.sub(r"\s+", " ", player).strip()
 
             cells = [c.get_text(" ", strip=True) for c in row.find_all("td")]
-
             position = cells[0] if len(cells) > 0 else ""
             ranking = to_int(cells[2]) if len(cells) > 2 else None
             wtn = to_float(cells[3]) if len(cells) > 3 else None
@@ -95,18 +94,12 @@ def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> lis
     return entries
 
 
-def get_entries(
-    tournament: Tournament,
-    nation: str = "SWE",
-    debug_dir: str | Path | None = None,
-    debug_index: int | None = None,
-) -> list[Entry]:
+def get_entries(tournament: Tournament, debug_dir: Path, index: int, nation: str = "SWE") -> list[Entry]:
     html = fetch_html(tournament.acceptance_url)
 
-    if debug_dir and debug_index is not None and debug_index <= 20:
-        debug = Path(debug_dir)
-        debug.mkdir(parents=True, exist_ok=True)
-        filename = f"{debug_index:03d}_{safe_name(tournament.category)}_{safe_name(tournament.name)}.html"
-        (debug / filename).write_text(html, encoding="utf-8")
+    if index <= 30:
+        debug_dir.mkdir(parents=True, exist_ok=True)
+        filename = f"{index:03d}_{safe_filename(tournament.category)}_{safe_filename(tournament.name)}.html"
+        (debug_dir / filename).write_text(html, encoding="utf-8")
 
     return parse_entries(html, tournament, nation=nation)

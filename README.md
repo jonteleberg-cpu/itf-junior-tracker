@@ -1,13 +1,16 @@
 # ITF Junior Tracker
 
-v0.3: Debug-version.
+Version 0.4.
 
-Den här versionen gör samma sak som tidigare, men sparar även felsökningsdata:
-- `data/debug/tournament_urls.txt`
-- `data/debug/calendar.html`
-- upp till 20 hämtade acceptance-list HTML-filer
+Körs via GitHub Actions.
 
-Körs via GitHub Actions:
-Actions → Weekly ITF Junior Tracker → Run workflow
+Efter körning laddas artifacten `itf-junior-reports` upp. Den ska innehålla:
+- `swedish_entries.json`
+- `swedish_entries.xlsx`
+- `debug/calendar.html`
+- `debug/tournament_urls.txt`
+- `debug/*.html`
+- `debug/run_summary.txt`
 
-Efter körning: ladda ner artifact `itf-junior-reports`.
+Viktig kontroll i loggen:
+`ITF Junior Tracker v0.4`
