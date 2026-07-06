@@ -74,11 +74,12 @@ def get_entries(page: Page, tournament: Tournament, debug_dir: Path, index: int,
         filename = f"{index:03d}_{safe_filename(tournament.category)}_{safe_filename(tournament.name)}_{status}.html"
         (debug_dir / filename).write_text(html, encoding="utf-8")
     entries = parse_entries(html, tournament, nation=nation)
+    table_count = html.count('table class="acceptance-list')
     with (debug_dir / "acceptance_debug.txt").open("a", encoding="utf-8") as f:
         f.write(
             f"{index}\t{tournament.name}\tstatus={status}\t"
             f"acceptance-list={html.count('acceptance-list')}\t"
-            f"table_count={html.count('table class=\"acceptance-list')}\t"
+            f"table_count={table_count}\t"
             f"{nation}={html.upper().count(nation.upper())}\t"
             f"entries={len(entries)}\t{tournament.acceptance_url}\n"
         )
