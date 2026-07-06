@@ -1,14 +1,12 @@
 from dataclasses import dataclass, asdict
 from typing import Optional
 
-
 @dataclass
 class Tournament:
     name: str
     url: str
     acceptance_url: str
     category: str = ""
-
 
 @dataclass
 class Entry:
