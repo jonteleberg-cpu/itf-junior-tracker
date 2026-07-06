@@ -46,7 +46,7 @@ def main() -> int:
 
     all_entries, errors = [], []
     print()
-    print(f"Läser {len(tournaments)} acceptance lists med snabb Playwright...")
+    print(f"Läser {len(tournaments)} acceptance lists med selector-wait...")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)

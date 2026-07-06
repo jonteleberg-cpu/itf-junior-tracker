@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 from typing import Optional
 from bs4 import BeautifulSoup
-from playwright.sync_api import Page
+from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError
 from .models import Entry, Tournament
 
 def safe_filename(value: str) -> str:
@@ -20,10 +20,16 @@ def to_float(value: str) -> Optional[float]:
     except ValueError:
         return None
 
-def fetch_rendered_html(page: Page, url: str) -> str:
+def fetch_rendered_html(page: Page, url: str) -> tuple[str, str]:
     page.goto(url, wait_until="domcontentloaded", timeout=15000)
-    page.wait_for_timeout(2500)
-    return page.content()
+    status = "domcontentloaded"
+    try:
+        page.wait_for_selector("table.acceptance-list", timeout=10000)
+        status = "table-found"
+    except PlaywrightTimeoutError:
+        status = "table-timeout"
+    page.wait_for_timeout(1000)
+    return page.content(), status
 
 def draw_for_table(table) -> str:
     h = table.find_previous("h3")
@@ -62,12 +68,18 @@ def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> lis
     return entries
 
 def get_entries(page: Page, tournament: Tournament, debug_dir: Path, index: int, nation: str = "SWE") -> list[Entry]:
-    html = fetch_rendered_html(page, tournament.acceptance_url)
+    html, status = fetch_rendered_html(page, tournament.acceptance_url)
     debug_dir.mkdir(parents=True, exist_ok=True)
     if index <= 40:
-        filename = f"{index:03d}_{safe_filename(tournament.category)}_{safe_filename(tournament.name)}.html"
+        filename = f"{index:03d}_{safe_filename(tournament.category)}_{safe_filename(tournament.name)}_{status}.html"
         (debug_dir / filename).write_text(html, encoding="utf-8")
     entries = parse_entries(html, tournament, nation=nation)
     with (debug_dir / "acceptance_debug.txt").open("a", encoding="utf-8") as f:
-        f.write(f"{index}\t{tournament.name}\tacceptance-list={html.count('acceptance-list')}\t{nation}={html.upper().count(nation.upper())}\tentries={len(entries)}\t{tournament.acceptance_url}\n")
+        f.write(
+            f"{index}\t{tournament.name}\tstatus={status}\t"
+            f"acceptance-list={html.count('acceptance-list')}\t"
+            f"table_count={html.count('table class=\"acceptance-list')}\t"
+            f"{nation}={html.upper().count(nation.upper())}\t"
+            f"entries={len(entries)}\t{tournament.acceptance_url}\n"
+        )
     return entries
