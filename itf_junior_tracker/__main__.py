@@ -17,6 +17,15 @@ def resolve_range(week: str) -> tuple[date, date]:
         return base, base + timedelta(days=6)
     return base + timedelta(days=7), base + timedelta(days=13)
 
+def in_target_week(tournament, start: date, end: date) -> bool:
+    if not tournament.start_date:
+        return False
+    try:
+        d = date.fromisoformat(tournament.start_date)
+    except ValueError:
+        return False
+    return start <= d <= end
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--week", choices=["current", "next"], default="next")
@@ -33,20 +42,27 @@ def main() -> int:
     print(f"Period: {start} till {end}")
     print("Hämtar kalender...")
 
-    tournaments = get_tournaments(start=start, debug_dir=debug_dir)
+    all_month_tournaments = get_tournaments(start=start, debug_dir=debug_dir)
+    tournaments = [t for t in all_month_tournaments if in_target_week(t, start, end)]
     if args.limit:
         tournaments = tournaments[:args.limit]
 
+    (debug_dir / "tournament_urls_filtered_week.txt").write_text(
+        "\n".join(f"{t.category}\t{t.start_date}\t{t.end_date}\t{t.date_text}\t{t.name}\t{t.acceptance_url}" for t in tournaments),
+        encoding="utf-8",
+    )
+
     print()
-    print("Turneringar som hittades:")
+    print(f"Turneringar i kalendern för månaden: {len(all_month_tournaments)}")
+    print(f"Turneringar som startar vald vecka: {len(tournaments)}")
     print("-" * 40)
     for t in tournaments:
-        print(f"{t.category:5} {t.name}")
+        print(f"{t.start_date}–{t.end_date}  {t.category:5} {t.name}")
         print(f"      {t.acceptance_url}")
 
     all_entries, errors = [], []
     print()
-    print(f"Läser {len(tournaments)} acceptance lists med selector-wait...")
+    print(f"Läser {len(tournaments)} acceptance lists...")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -67,7 +83,8 @@ def main() -> int:
     (debug_dir / "run_summary.txt").write_text("\n".join([
         f"ITF Junior Tracker v{__version__}",
         f"Period: {start} till {end}",
-        f"Tournaments: {len(tournaments)}",
+        f"Tournaments in month: {len(all_month_tournaments)}",
+        f"Tournaments selected: {len(tournaments)}",
         f"Entries found: {len(all_entries)}",
         f"Errors: {len(errors)}",
         "",

@@ -7,6 +7,9 @@ class Tournament:
     url: str
     acceptance_url: str
     category: str = ""
+    date_text: str = ""
+    start_date: str = ""
+    end_date: str = ""
 
 @dataclass
 class Entry:
@@ -20,6 +23,8 @@ class Entry:
     position: str
     info: str
     acceptance_url: str
+    tournament_start: str = ""
+    tournament_end: str = ""
 
     def to_dict(self):
         return asdict(self)

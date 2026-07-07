@@ -64,6 +64,8 @@ def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> lis
                 position=cells[0] if len(cells) > 0 else "",
                 info=cells[-1] if cells else "",
                 acceptance_url=tournament.acceptance_url,
+                tournament_start=tournament.start_date,
+                tournament_end=tournament.end_date,
             ))
     return entries
 
@@ -71,16 +73,10 @@ def get_entries(page: Page, tournament: Tournament, debug_dir: Path, index: int,
     html, status = fetch_rendered_html(page, tournament.acceptance_url)
     debug_dir.mkdir(parents=True, exist_ok=True)
     if index <= 40:
-        filename = f"{index:03d}_{safe_filename(tournament.category)}_{safe_filename(tournament.name)}_{status}.html"
+        filename = f"{index:03d}_{tournament.start_date}_{safe_filename(tournament.category)}_{safe_filename(tournament.name)}_{status}.html"
         (debug_dir / filename).write_text(html, encoding="utf-8")
     entries = parse_entries(html, tournament, nation=nation)
     table_count = html.count('table class="acceptance-list')
     with (debug_dir / "acceptance_debug.txt").open("a", encoding="utf-8") as f:
-        f.write(
-            f"{index}\t{tournament.name}\tstatus={status}\t"
-            f"acceptance-list={html.count('acceptance-list')}\t"
-            f"table_count={table_count}\t"
-            f"{nation}={html.upper().count(nation.upper())}\t"
-            f"entries={len(entries)}\t{tournament.acceptance_url}\n"
-        )
+        f.write(f"{index}\t{tournament.start_date}\t{tournament.name}\tstatus={status}\tacceptance-list={html.count('acceptance-list')}\ttable_count={table_count}\t{nation}={html.upper().count(nation.upper())}\tentries={len(entries)}\t{tournament.acceptance_url}\n")
     return entries

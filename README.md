@@ -1,8 +1,8 @@
 # ITF Junior Tracker
 
-Version 0.7.1.
+Version 0.8.
 
 Fix:
-- Rättar syntaxfelet i v0.7.
-- Väntar på `table.acceptance-list` upp till 10 sekunder.
-- Loggen ska börja med `ITF Junior Tracker v0.7.1`.
+- Läser datumkolumnen i ITF-kalendern.
+- Filtrerar till turneringar som STARTAR inom vald vecka.
+- Loggen ska börja med `ITF Junior Tracker v0.8.0`.
