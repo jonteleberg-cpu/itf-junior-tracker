@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 from . import __version__
 from .acceptance import get_entries
 from .calendar import get_tournaments
-from .report import print_report, save_excel, save_json
+from .report import print_report, save_excel, save_json, save_weekly_report
 
 def monday(d: date) -> date:
     return d - timedelta(days=d.weekday())
@@ -52,18 +52,10 @@ def main() -> int:
         encoding="utf-8",
     )
 
-    print()
     print(f"Turneringar i kalendern för månaden: {len(all_month_tournaments)}")
     print(f"Turneringar som startar vald vecka: {len(tournaments)}")
-    print("-" * 40)
-    for t in tournaments:
-        print(f"{t.start_date}–{t.end_date}  {t.category:5} {t.name}")
-        print(f"      {t.acceptance_url}")
 
     all_entries, errors = [], []
-    print()
-    print(f"Läser {len(tournaments)} acceptance lists...")
-
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -80,6 +72,8 @@ def main() -> int:
 
     save_json(all_entries, data_dir / "swedish_entries.json")
     save_excel(all_entries, data_dir / "swedish_entries.xlsx")
+    save_weekly_report(all_entries, start, end, data_dir / "weekly_report.txt")
+
     (debug_dir / "run_summary.txt").write_text("\n".join([
         f"ITF Junior Tracker v{__version__}",
         f"Period: {start} till {end}",
@@ -92,12 +86,11 @@ def main() -> int:
         *errors,
     ]), encoding="utf-8")
 
-    print_report(all_entries)
-    print()
+    print_report(all_entries, start, end)
     print("Sparat:")
+    print("data/weekly_report.txt")
     print("data/swedish_entries.json")
     print("data/swedish_entries.xlsx")
-    print("data/debug/run_summary.txt")
     return 0
 
 if __name__ == "__main__":

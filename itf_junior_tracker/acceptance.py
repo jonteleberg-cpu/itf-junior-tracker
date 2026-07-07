@@ -35,11 +35,27 @@ def draw_for_table(table) -> str:
     h = table.find_previous("h3")
     return h.get_text(" ", strip=True).title() if h else ""
 
+def gender_for_table(table) -> str:
+    h2 = table.find_previous("h2")
+    txt = h2.get_text(" ", strip=True).lower() if h2 else ""
+    if "girl" in txt:
+        return "Girls"
+    if "boy" in txt:
+        return "Boys"
+    # fallback: look nearby text
+    parent_txt = table.find_parent().get_text(" ", strip=True).lower() if table.find_parent() else ""
+    if "girls" in parent_txt:
+        return "Girls"
+    if "boys" in parent_txt:
+        return "Boys"
+    return ""
+
 def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> list[Entry]:
     soup = BeautifulSoup(html, "lxml")
     entries = []
     for table in soup.select("table.acceptance-list"):
         draw = draw_for_table(table)
+        gender = gender_for_table(table)
         if draw.upper() == "WITHDRAWALS":
             continue
         for row in table.select("tbody tr"):
@@ -66,6 +82,7 @@ def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> lis
                 acceptance_url=tournament.acceptance_url,
                 tournament_start=tournament.start_date,
                 tournament_end=tournament.end_date,
+                gender=gender,
             ))
     return entries
 
