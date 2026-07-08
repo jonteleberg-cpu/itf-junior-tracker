@@ -21,10 +21,20 @@ def date_sv(value: date) -> str:
 def clean_tournament_name(name: str, category: str) -> str:
     text = re.sub(r"\s+", " ", name).strip()
     text = re.sub(r"\([A-Z]{3}\)", "", text).strip()
+
     if category:
-        text = text.replace(category, "").strip()
-    words = text.title().split()
-    return " ".join(words)
+        text = re.sub(rf"\b{re.escape(category)}\b", "", text, flags=re.I)
+
+    text = re.sub(r"\s+", " ", text).strip()
+    parts = text.split()
+
+    # Handles "NEUNKIRCHEN NEUNKIRCHEN", "BOGOTA BOGOTA", etc.
+    if len(parts) % 2 == 0:
+        half = len(parts) // 2
+        if [p.lower() for p in parts[:half]] == [p.lower() for p in parts[half:]]:
+            parts = parts[:half]
+
+    return " ".join(parts).title()
 
 def draw_short(draw: str) -> str:
     return DRAW_LABEL.get(draw, draw)
