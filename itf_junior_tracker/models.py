@@ -1,7 +1,6 @@
 from dataclasses import dataclass, asdict
 from typing import Optional
 
-
 @dataclass
 class Tournament:
     name: str
@@ -11,7 +10,6 @@ class Tournament:
     date_text: str = ""
     start_date: str = ""
     end_date: str = ""
-
 
 @dataclass
 class Entry:
@@ -28,6 +26,7 @@ class Entry:
     tournament_start: str = ""
     tournament_end: str = ""
     gender: str = ""
+    player_url: str = ""
 
     def to_dict(self):
         return asdict(self)

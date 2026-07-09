@@ -2,9 +2,12 @@ from __future__ import annotations
 import re
 from pathlib import Path
 from typing import Optional
+from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from playwright.sync_api import Page, TimeoutError as PlaywrightTimeoutError
 from .models import Entry, Tournament
+
+BASE_URL = "https://www.itftennis.com"
 
 def safe_filename(value: str) -> str:
     value = re.sub(r"[^A-Za-z0-9ÅÄÖåäö_-]+", "_", value.strip())
@@ -38,35 +41,27 @@ def draw_for_table(table) -> str:
 def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> list[Entry]:
     soup = BeautifulSoup(html, "lxml")
     entries = []
-
     sections = soup.select(".acceptance-lists__details-section")
     if not sections:
         sections = [soup]
-
-    # ITF renders two sections: first Boys, second Girls.
-    # The hidden class only means "not selected in UI", not "irrelevant".
     for section_index, section in enumerate(sections):
         gender = "Boys" if section_index == 0 else "Girls"
-
         for table in section.select("table.acceptance-list"):
             draw = draw_for_table(table)
             if draw.upper() == "WITHDRAWALS":
                 continue
-
             for row in table.select("tbody tr"):
                 nationality = row.select_one(".acceptance-list__nationality")
                 if not nationality or nationality.get_text(" ", strip=True).upper() != nation:
                     continue
-
                 player_link = row.select_one("a.acceptance-list__player")
                 if not player_link:
                     continue
-
                 spans = player_link.find_all("span")
                 player = spans[-1].get_text(" ", strip=True) if spans else player_link.get_text(" ", strip=True)
                 player = re.sub(r"\s+", " ", player).strip()
+                player_url = urljoin(BASE_URL, player_link.get("href", "")) if player_link.get("href") else ""
                 cells = [c.get_text(" ", strip=True) for c in row.find_all("td")]
-
                 entries.append(Entry(
                     player=player,
                     nation=nation,
@@ -81,28 +76,18 @@ def parse_entries(html: str, tournament: Tournament, nation: str = "SWE") -> lis
                     tournament_start=tournament.start_date,
                     tournament_end=tournament.end_date,
                     gender=gender,
+                    player_url=player_url,
                 ))
-
     return entries
 
 def get_entries(page: Page, tournament: Tournament, debug_dir: Path, index: int, nation: str = "SWE") -> list[Entry]:
     html, status = fetch_rendered_html(page, tournament.acceptance_url)
     debug_dir.mkdir(parents=True, exist_ok=True)
-
     if index <= 40:
         filename = f"{index:03d}_{tournament.start_date}_{safe_filename(tournament.category)}_{safe_filename(tournament.name)}_{status}.html"
         (debug_dir / filename).write_text(html, encoding="utf-8")
-
     entries = parse_entries(html, tournament, nation=nation)
     table_count = html.count('table class="acceptance-list')
-
     with (debug_dir / "acceptance_debug.txt").open("a", encoding="utf-8") as f:
-        f.write(
-            f"{index}\t{tournament.start_date}\t{tournament.name}\tstatus={status}\t"
-            f"acceptance-list={html.count('acceptance-list')}\t"
-            f"table_count={table_count}\t"
-            f"{nation}={html.upper().count(nation.upper())}\t"
-            f"entries={len(entries)}\t{tournament.acceptance_url}\n"
-        )
-
+        f.write(f"{index}\t{tournament.start_date}\t{tournament.name}\tstatus={status}\tacceptance-list={html.count('acceptance-list')}\ttable_count={table_count}\t{nation}={html.upper().count(nation.upper())}\tentries={len(entries)}\t{tournament.acceptance_url}\n")
     return entries
