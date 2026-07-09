@@ -1,0 +1,53 @@
+name: ITF Junior Results Tracker
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  results:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+
+      - name: Run results tracker
+        run: python -m itf_junior_tracker.results
+
+      - name: List result files
+        run: find data/results -maxdepth 4 -type f -print || true
+
+      - name: Upload result reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: itf-junior-results
+          path: data/results
+          if-no-files-found: error
+
+      - name: Commit results to repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/results/
+
+          if git diff --cached --quiet; then
+            echo "No result changes to commit."
+          else
+            git commit -m "Update ITF junior results report"
+            git push
+          fi
