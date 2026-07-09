@@ -1,12 +1,21 @@
-# ITF Junior Tracker
+# ITF junior tracker – Sweden
 
-Version 0.9.
+Kör nästa veckas svenska ITF-juniorlista:
 
-Ny rapport:
-- `weekly_report.txt` skapas.
-- Datumintervall visas överst.
-- Turneringar utan svenskar visas inte.
-- Sortering: J500, J300, J200, J100, J60, J30.
-- Rubrikformat: `J100 Neunkirchen - Girls`.
-- Spelarrad: `Grace Bernstein (501)    M    #7`.
-- Excel får renare kolumner: Category, Tournament, Gender, Player, Ranking, List, Position.
+```bash
+pip install -r requirements.txt
+python itf_junior_tracker.py --week next
+```
+
+Output:
+
+- `reports/next_week.md` – färdig rapport med klickbara turneringsrubriker
+- `reports/swedish_entries.json` – rådata
+
+Formatet är sorterat J500 → J30 och visar:
+
+`Spelare (ranking) – M/Q/Alt #position`
+
+Exempel:
+
+`Filip Hesser (352) – M #13`
