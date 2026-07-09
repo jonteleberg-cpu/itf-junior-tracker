@@ -5,29 +5,25 @@ Period: 13 juli 2026 – 19 juli 2026
 
 J100 Moenchengladbach - Girls
 -----------------------------
-Grace Bernstein (506)    M    #32
-
-J100 Moenchengladbach - Boys
-----------------------------
-Viggo Kalleskog (2895)    Q    #30
+Grace Bernstein (506)    M    #28
 
 J60 Hillegom - Girls
 --------------------
 Mimmie Buchler (693)    M    #7
-Nicole Saidizand (775)    M    #10
-Emina Honic (814)    M    #11
+Nicole Saidizand (775)    M    #9
+Emina Honic (814)    M    #10
 
 J60 Hillegom - Boys
 -------------------
-Jonathan Gabriel Nilsson    Alt  #38
+Jonathan Gabriel Nilsson    Alt  #35
 
 J60 Ioannina - Girls
 --------------------
-Alexandra Vantola    Alt  #17
+Alexandra Vantola    Alt  #16
 
 J60 Ioannina - Boys
 -------------------
-Spyridon Sioutas (4218)    Alt  #2
+Spyridon Sioutas (4218)    Q    #18
 
 J60 Nairobi - Girls
 -------------------
@@ -35,13 +31,13 @@ Lovisa Neselius (3201)    M    #19
 
 J30 Banja Luka - Girls
 ----------------------
-Emanuela Basic    Alt  #18
-Neira Hadziomerovic    Alt  #29
+Emanuela Basic    Alt  #13
+Neira Hadziomerovic    Alt  #24
 
 J30 Banja Luka - Boys
 ---------------------
-Viggo Salipurovic (3903)    Q    #23
-Valter Mandir    Alt  #8
+Viggo Salipurovic (3903)    Q    #22
+Valter Mandir    Alt  #6
 
 J30 Izmir - Boys
 ----------------
@@ -49,18 +45,13 @@ Emil Curovic (2376)    M    #12
 
 J30 Kaunas - Boys
 -----------------
-Christian Gorgin (1272)    M    #4
-Patrick Eklund (1770)    M    #13
+Patrick Eklund (1770)    M    #12
 Oliver Wennerstad (2024)    M    #16
-Nils Preger (2626)    Q    #6
-Noah Roberte (2820)    Q    #7
-Gustav Karlsson (2942)    Q    #8
-Ludvig Ossian Sward (3374)    Q    #14
-
-J30 Szentes - Boys
-------------------
-Noel Hajduk    Alt  #13
+Nils Preger (2626)    Q    #5
+Noah Roberte (2820)    Q    #6
+Gustav Karlsson (2942)    Q    #7
+Ludvig Ossian Sward (3374)    Q    #13
 
 --------------------------------------------------------
-Turneringar med svenska spelare: 12
-Svenska entries: 22
+Turneringar med svenska spelare: 10
+Svenska entries: 19
