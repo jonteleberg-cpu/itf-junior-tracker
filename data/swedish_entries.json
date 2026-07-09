@@ -7,27 +7,13 @@
     "draw": "Main Draw",
     "ranking": 506,
     "wtn": 21.74,
-    "position": "32",
+    "position": "28",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j100-moenchengladbach/ger/2026/j-j100-ger-2026-004/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Girls"
-  },
-  {
-    "player": "Viggo Kalleskog",
-    "nation": "SWE",
-    "tournament": "J100 MOENCHENGLADBACH J100 MOENCHENGLADBACH (GER)",
-    "category": "J100",
-    "draw": "Qualifying",
-    "ranking": 2895,
-    "wtn": 23.36,
-    "position": "30",
-    "info": "",
-    "acceptance_url": "https://www.itftennis.com/en/tournament/j100-moenchengladbach/ger/2026/j-j100-ger-2026-004/acceptance-list/",
-    "tournament_start": "2026-07-13",
-    "tournament_end": "2026-07-18",
-    "gender": "Boys"
+    "gender": "Girls",
+    "player_url": "https://www.itftennis.com/en/players/grace-bernstein/800668844/swe/jt/"
   },
   {
     "player": "Mimmie Buchler",
@@ -42,7 +28,8 @@
     "acceptance_url": "https://www.itftennis.com/en/tournament/j60-hillegom/ned/2026/j-j60-ned-2026-002/acceptance-list/",
     "tournament_start": "2026-07-14",
     "tournament_end": "2026-07-19",
-    "gender": "Girls"
+    "gender": "Girls",
+    "player_url": "https://www.itftennis.com/en/players/mimmie-buchler/800711385/swe/jt/"
   },
   {
     "player": "Nicole Saidizand",
@@ -52,12 +39,13 @@
     "draw": "Main Draw",
     "ranking": 775,
     "wtn": 22.91,
-    "position": "10",
+    "position": "9",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j60-hillegom/ned/2026/j-j60-ned-2026-002/acceptance-list/",
     "tournament_start": "2026-07-14",
     "tournament_end": "2026-07-19",
-    "gender": "Girls"
+    "gender": "Girls",
+    "player_url": "https://www.itftennis.com/en/players/nicole-saidizand/800694981/swe/jt/"
   },
   {
     "player": "Emina Honic",
@@ -67,12 +55,13 @@
     "draw": "Main Draw",
     "ranking": 814,
     "wtn": 23.15,
-    "position": "11",
+    "position": "10",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j60-hillegom/ned/2026/j-j60-ned-2026-002/acceptance-list/",
     "tournament_start": "2026-07-14",
     "tournament_end": "2026-07-19",
-    "gender": "Girls"
+    "gender": "Girls",
+    "player_url": "https://www.itftennis.com/en/players/emina-honic/800749245/swe/jt/"
   },
   {
     "player": "Jonathan Gabriel Nilsson",
@@ -82,12 +71,13 @@
     "draw": "Alternates",
     "ranking": null,
     "wtn": 25.26,
-    "position": "38",
+    "position": "35",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j60-hillegom/ned/2026/j-j60-ned-2026-002/acceptance-list/",
     "tournament_start": "2026-07-14",
     "tournament_end": "2026-07-19",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/jonathan-gabriel-nilsson/800845860/swe/jt/"
   },
   {
     "player": "Alexandra Vantola",
@@ -97,27 +87,29 @@
     "draw": "Alternates",
     "ranking": null,
     "wtn": 31.47,
-    "position": "17",
+    "position": "16",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j60-ioannina/gre/2026/j-j60-gre-2026-006/acceptance-list/",
     "tournament_start": "2026-07-14",
     "tournament_end": "2026-07-19",
-    "gender": "Girls"
+    "gender": "Girls",
+    "player_url": "https://www.itftennis.com/en/players/alexandra-vantola/800747958/swe/jt/"
   },
   {
     "player": "Spyridon Sioutas",
     "nation": "SWE",
     "tournament": "J60 IOANNINA J60 IOANNINA (GRE)",
     "category": "J60",
-    "draw": "Alternates",
+    "draw": "Qualifying",
     "ranking": 4218,
     "wtn": 25.14,
-    "position": "2",
+    "position": "18",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j60-ioannina/gre/2026/j-j60-gre-2026-006/acceptance-list/",
     "tournament_start": "2026-07-14",
     "tournament_end": "2026-07-19",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/spyridon-sioutas/800654611/swe/jt/"
   },
   {
     "player": "Lovisa Neselius",
@@ -132,7 +124,8 @@
     "acceptance_url": "https://www.itftennis.com/en/tournament/j60-nairobi/ken/2026/j-j60-ken-2026-003/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Girls"
+    "gender": "Girls",
+    "player_url": "https://www.itftennis.com/en/players/lovisa-neselius/800643879/swe/jt/"
   },
   {
     "player": "Emanuela Basic",
@@ -142,12 +135,13 @@
     "draw": "Alternates",
     "ranking": null,
     "wtn": 31.26,
-    "position": "18",
+    "position": "13",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-banja-luka/bih/2026/j-j30-bih-2026-007/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Girls"
+    "gender": "Girls",
+    "player_url": "https://www.itftennis.com/en/players/emanuela-basic/800809401/swe/jt/"
   },
   {
     "player": "Neira Hadziomerovic",
@@ -157,12 +151,13 @@
     "draw": "Alternates",
     "ranking": null,
     "wtn": 34.14,
-    "position": "29",
+    "position": "24",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-banja-luka/bih/2026/j-j30-bih-2026-007/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Girls"
+    "gender": "Girls",
+    "player_url": "https://www.itftennis.com/en/players/neira-hadziomerovic/800787369/swe/jt/"
   },
   {
     "player": "Viggo Salipurovic",
@@ -172,12 +167,13 @@
     "draw": "Qualifying",
     "ranking": 3903,
     "wtn": 23.92,
-    "position": "23",
+    "position": "22",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-banja-luka/bih/2026/j-j30-bih-2026-007/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/viggo-salipurovic/800671572/swe/jt/"
   },
   {
     "player": "Valter Mandir",
@@ -187,12 +183,13 @@
     "draw": "Alternates",
     "ranking": null,
     "wtn": 25.64,
-    "position": "8",
+    "position": "6",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-banja-luka/bih/2026/j-j30-bih-2026-007/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/valter-mandir/800709619/swe/jt/"
   },
   {
     "player": "Emil Curovic",
@@ -207,22 +204,8 @@
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-izmir/tur/2026/j-j30-tur-2026-004/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-19",
-    "gender": "Boys"
-  },
-  {
-    "player": "Christian Gorgin",
-    "nation": "SWE",
-    "tournament": "J30 KAUNAS J30 KAUNAS (LTU)",
-    "category": "J30",
-    "draw": "Main Draw",
-    "ranking": 1272,
-    "wtn": 21.39,
-    "position": "4",
-    "info": "",
-    "acceptance_url": "https://www.itftennis.com/en/tournament/j30-kaunas/ltu/2026/j-j30-ltu-2026-004/acceptance-list/",
-    "tournament_start": "2026-07-13",
-    "tournament_end": "2026-07-18",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/emil-curovic/800735502/swe/jt/"
   },
   {
     "player": "Patrick Eklund",
@@ -232,12 +215,13 @@
     "draw": "Main Draw",
     "ranking": 1770,
     "wtn": 22.23,
-    "position": "13",
+    "position": "12",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-kaunas/ltu/2026/j-j30-ltu-2026-004/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/patrick-eklund/800692628/swe/jt/"
   },
   {
     "player": "Oliver Wennerstad",
@@ -252,7 +236,8 @@
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-kaunas/ltu/2026/j-j30-ltu-2026-004/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/oliver-wennerstad/800692529/swe/jt/"
   },
   {
     "player": "Nils Preger",
@@ -262,12 +247,13 @@
     "draw": "Qualifying",
     "ranking": 2626,
     "wtn": 22.03,
-    "position": "6",
+    "position": "5",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-kaunas/ltu/2026/j-j30-ltu-2026-004/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/nils-preger/800668641/swe/jt/"
   },
   {
     "player": "Noah Roberte",
@@ -277,12 +263,13 @@
     "draw": "Qualifying",
     "ranking": 2820,
     "wtn": 24.6,
-    "position": "7",
+    "position": "6",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-kaunas/ltu/2026/j-j30-ltu-2026-004/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/noah-roberte/800728774/swe/jt/"
   },
   {
     "player": "Gustav Karlsson",
@@ -292,12 +279,13 @@
     "draw": "Qualifying",
     "ranking": 2942,
     "wtn": 22.54,
-    "position": "8",
+    "position": "7",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-kaunas/ltu/2026/j-j30-ltu-2026-004/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/gustav-karlsson/800738164/swe/jt/"
   },
   {
     "player": "Ludvig Ossian Sward",
@@ -307,26 +295,12 @@
     "draw": "Qualifying",
     "ranking": 3374,
     "wtn": 21.62,
-    "position": "14",
+    "position": "13",
     "info": "",
     "acceptance_url": "https://www.itftennis.com/en/tournament/j30-kaunas/ltu/2026/j-j30-ltu-2026-004/acceptance-list/",
     "tournament_start": "2026-07-13",
     "tournament_end": "2026-07-18",
-    "gender": "Boys"
-  },
-  {
-    "player": "Noel Hajduk",
-    "nation": "SWE",
-    "tournament": "J30 SZENTES J30 SZENTES (HUN)",
-    "category": "J30",
-    "draw": "Alternates",
-    "ranking": null,
-    "wtn": 26.75,
-    "position": "13",
-    "info": "",
-    "acceptance_url": "https://www.itftennis.com/en/tournament/j30-szentes/hun/2026/j-j30-hun-2026-002/acceptance-list/",
-    "tournament_start": "2026-07-14",
-    "tournament_end": "2026-07-19",
-    "gender": "Boys"
+    "gender": "Boys",
+    "player_url": "https://www.itftennis.com/en/players/ludvig-ossian-sward/800731644/swe/jt/"
   }
 ]
